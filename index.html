@@ -1,0 +1,939 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>DataBridge Audit Analytics</title>
+<meta name="description" content="DataBridge is audit analytics software for banks and SACCOs. It extracts every transaction from your core banking system each night, tests 100% of it, and reports the exceptions — inside your own network.">
+<meta name="keywords" content="audit analytics software, continuous auditing, internal audit software Kenya, SACCO audit software, exception reporting, continuous controls monitoring, core banking data extraction, segregation of duties, Benford's Law, monetary unit sampling">
+<meta name="robots" content="index, follow">
+<meta name="author" content="DataBridge">
+<link rel="canonical" href="https://databridge.africa/">
+
+<!-- Open Graph: what a link to this page looks like in WhatsApp, LinkedIn and Slack,
+     which is how a B2B page is actually shared. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DataBridge">
+<meta property="og:title" content="DataBridge — Audit analytics for banks and SACCOs">
+<meta property="og:description" content="Every transaction from your core banking system, tested every night. DataBridge reports the exceptions by morning, inside your own network.">
+<meta property="og:url" content="https://databridge.africa/">
+<meta property="og:locale" content="en_KE">
+<!-- Add a 1200x630 image and uncomment:
+<meta property="og:image" content="https://databridge.africa/og-image.png"> -->
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DataBridge — Audit analytics for banks and SACCOs">
+<meta name="twitter:description" content="Every transaction, tested every night. The exceptions by morning, inside your own network.">
+
+<meta name="theme-color" content="#EDF1F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#08110F" media="(prefers-color-scheme: dark)">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%224%22 fill=%22%230B1A1D%22/><text x=%2216%22 y=%2222%22 font-family=%22monospace%22 font-size=%2213%22 fill=%22%23D9A94A%22 text-anchor=%22middle%22>DB</text></svg>">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "DataBridge",
+  "applicationCategory": "BusinessApplication",
+  "applicationSubCategory": "Audit Analytics",
+  "operatingSystem": "Windows, Linux",
+  "description": "DataBridge is audit analytics and continuous controls monitoring software for banks and SACCOs. It extracts every transaction from core banking systems nightly, tests one hundred percent of the population against 29 built-in audit tests, and reports exceptions to the internal audit team. Installed inside the customer's own network.",
+  "featureList": [
+    "Continuous auditing over the full transaction population",
+    "Duplicate payment detection",
+    "Segregation of duties testing",
+    "Benford's Law analysis",
+    "Monetary unit sampling",
+    "Oracle, SQL Server, PostgreSQL and MySQL extraction",
+    "Exception tables with case management",
+    "Tamper-evident audit trail"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "USD",
+    "price": "500",
+    "description": "Per named user, per year. Standard, Professional and Enterprise editions."
+  },
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Internal audit, risk and compliance teams at banks, SACCOs and regulators"
+  }
+}
+</script>
+
+<style>
+/* The artifact host supplied these; a standalone page has to set them itself. */
+html { -webkit-text-size-adjust: 100%; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+:root {
+  color-scheme: light dark;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+</style>
+
+<style>
+  /* ── Ink and brass ───────────────────────────────────────────────────────
+     A ledger's palette. Ink ground with a blue-green bias (never pure black),
+     brass for the auditor's flag, a quiet green for what ties out. Light is
+     the morning report; dark is the night run. Both are true to a product
+     that works at 2am and is read at 8am. */
+  :root {
+    --ground:      #EDF1F0;
+    --surface:     #FFFFFF;
+    --surface-2:   #F4F7F6;
+    --surface-3:   #E4EAE8;
+
+    --ink:         #0B1A1D;
+    --ink-2:       #3B4F54;
+    --ink-3:       #6A7E82;
+    --ink-4:       #93A4A6;
+
+    --rule:        #D2DCD9;
+    --rule-soft:   #E3EAE8;
+    --rule-strong: #A9BAB7;
+
+    --brass:       #8A6614;
+    --brass-2:     #B4892A;
+    --brass-wash:  #F8F0DC;
+    --brass-edge:  #E7D4A4;
+
+    --verify:      #1B6549;
+    --verify-wash: #E4F0EA;
+
+    --flag:        #9A3412;
+    --flag-wash:   #FBEAE2;
+
+    --font-display: "Spectral", Georgia, "Times New Roman", serif;
+    --font-body:    "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono:    "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    --shadow: 0 1px 2px rgba(11, 26, 29, .05), 0 12px 32px -18px rgba(11, 26, 29, .35);
+    --measure: 64ch;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #08110F;
+      --surface:     #0E1C1B;
+      --surface-2:   #12211F;
+      --surface-3:   #182A28;
+
+      --ink:         #E9F0ED;
+      --ink-2:       #AEBFBB;
+      --ink-3:       #7C8F8B;
+      --ink-4:       #5D6F6C;
+
+      --rule:        #1D302D;
+      --rule-soft:   #162725;
+      --rule-strong: #2E4542;
+
+      --brass:       #E0B45C;
+      --brass-2:     #D9A94A;
+      --brass-wash:  #211A08;
+      --brass-edge:  #4A3A14;
+
+      --verify:      #57BA94;
+      --verify-wash: #0D2320;
+
+      --flag:        #E8916A;
+      --flag-wash:   #2A1710;
+
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 18px 40px -22px rgba(0, 0, 0, .8);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #08110F;
+    --surface:     #0E1C1B;
+    --surface-2:   #12211F;
+    --surface-3:   #182A28;
+
+    --ink:         #E9F0ED;
+    --ink-2:       #AEBFBB;
+    --ink-3:       #7C8F8B;
+    --ink-4:       #5D6F6C;
+
+    --rule:        #1D302D;
+    --rule-soft:   #162725;
+    --rule-strong: #2E4542;
+
+    --brass:       #E0B45C;
+    --brass-2:     #D9A94A;
+    --brass-wash:  #211A08;
+    --brass-edge:  #4A3A14;
+
+    --verify:      #57BA94;
+    --verify-wash: #0D2320;
+
+    --flag:        #E8916A;
+    --flag-wash:   #2A1710;
+
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 18px 40px -22px rgba(0, 0, 0, .8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding-inline: 20px;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -.012em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  p { margin: 0; }
+  a { color: inherit; }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* ── masthead ─────────────────────────────────────────────────────────── */
+
+  .masthead {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 40;
+    background: color-mix(in srgb, var(--ground) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .masthead-in {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; padding-block: 14px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: -.01em; }
+  .brand-mark {
+    width: 26px; height: 26px; flex: none;
+    border: 1.5px solid var(--brass); border-radius: 3px;
+    display: grid; place-items: center;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--brass);
+  }
+  .masthead nav { display: flex; gap: 26px; font-size: 14px; color: var(--ink-2); }
+  .masthead nav a { text-decoration: none; }
+  .masthead nav a:hover { color: var(--brass); }
+  @media (max-width: 860px) { .masthead nav { display: none; } }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body); font-size: 14px; font-weight: 500;
+    padding: 10px 18px; border-radius: 2px; text-decoration: none;
+    border: 1px solid var(--ink); background: var(--ink); color: var(--ground);
+    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--brass); border-color: var(--brass); color: #0B1A1D; }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--rule-strong); }
+  .btn-ghost:hover { background: transparent; border-color: var(--brass); color: var(--brass); }
+  .btn:focus-visible, a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--brass); outline-offset: 3px;
+  }
+
+  /* ── hero ─────────────────────────────────────────────────────────────── */
+
+  .hero { padding-block: 72px 56px; }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: start; }
+  @media (max-width: 960px) { .hero-grid { grid-template-columns: 1fr; gap: 40px; } }
+
+  .hero h1 {
+    font-size: clamp(38px, 5.4vw, 62px);
+    line-height: 1.04;
+    margin-block: 18px 22px;
+  }
+  .hero h1 em { font-style: italic; color: var(--brass); }
+  .hero-lede { font-size: 18px; color: var(--ink-2); max-width: 52ch; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .hero-meta {
+    margin-top: 30px; padding-top: 22px; border-top: 1px solid var(--rule);
+    display: flex; flex-wrap: wrap; gap: 28px;
+  }
+  .hero-meta div { display: flex; flex-direction: column; gap: 2px; }
+  .hero-meta dt { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .13em;
+    text-transform: uppercase; color: var(--ink-3); }
+  .hero-meta dd { margin: 0; font-family: var(--font-mono); font-size: 19px; color: var(--ink); }
+
+  /* ── the ledger: everything ties out except one row ───────────────────── */
+
+  .ledger {
+    background: var(--surface); border: 1px solid var(--rule);
+    box-shadow: var(--shadow); border-radius: 3px; overflow: hidden;
+  }
+  .ledger-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 13px 16px; background: var(--surface-2); border-bottom: 1px solid var(--rule);
+  }
+  .ledger-title { font-family: var(--font-mono); font-size: 12px; color: var(--ink-2); }
+  .ledger-stamp {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--verify);
+    background: var(--verify-wash); border: 1px solid color-mix(in srgb, var(--verify) 30%, transparent);
+    padding: 3px 8px; border-radius: 2px;
+  }
+  .ledger-scroll { overflow-x: auto; }
+  table.rows { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 12px; }
+  table.rows th {
+    text-align: left; font-weight: 500; font-size: 10px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink-3);
+    padding: 9px 14px; border-bottom: 1px solid var(--rule); white-space: nowrap;
+  }
+  table.rows td {
+    padding: 10px 12px; border-bottom: 1px solid var(--rule-soft);
+    color: var(--ink-2); white-space: nowrap;
+  }
+  table.rows th:last-child, table.rows td:last-child { padding-right: 16px; }
+  table.rows th:first-child, table.rows td:first-child { padding-left: 16px; }
+  table.rows td.amt { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink); }
+  table.rows tr:last-child td { border-bottom: none; }
+  .tick { color: var(--verify); }
+  tr.flagged td { background: var(--brass-wash); color: var(--ink); }
+  tr.flagged td:first-child { box-shadow: inset 3px 0 0 var(--brass-2); font-weight: 500; }
+  .flag-mark { color: var(--brass); font-weight: 500; }
+
+  .ledger-foot {
+    padding: 14px 16px; border-top: 1px solid var(--rule); background: var(--surface-2);
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .ledger-foot .flag-mark { flex: none; }
+  .ledger-foot p { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+  .ledger-foot strong { color: var(--ink); font-weight: 500; }
+
+  /* ── sections ─────────────────────────────────────────────────────────── */
+
+  section { padding-block: 72px; border-top: 1px solid var(--rule); }
+  .sec-head { max-width: var(--measure); margin-bottom: 40px; }
+  .sec-head h2 { font-size: clamp(26px, 3.2vw, 36px); line-height: 1.15; margin-block: 12px 14px; }
+  .sec-head p { color: var(--ink-2); font-size: 17px; }
+
+  /* the argument: sample vs population */
+  .argument { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule);
+    border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+  @media (max-width: 760px) { .argument { grid-template-columns: 1fr; } }
+  .argument > div { background: var(--surface); padding: 28px; }
+  .argument h3 { font-size: 19px; margin-bottom: 10px; }
+  .argument p { color: var(--ink-2); font-size: 15px; }
+  .dots { display: grid; grid-template-columns: repeat(20, 1fr); gap: 3px; margin-block: 20px 16px; }
+  .dot { aspect-ratio: 1; border-radius: 50%; background: var(--rule-strong); opacity: .5; }
+  .dot.on { background: var(--brass-2); opacity: 1; }
+  .dot.miss { background: var(--flag); opacity: .95; }
+  .argument .caption { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); }
+
+  /* pipeline */
+  .pipeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule);
+    border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+  @media (max-width: 900px) { .pipeline { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .pipeline { grid-template-columns: 1fr; } }
+  .stage { background: var(--surface); padding: 26px 22px; display: flex; flex-direction: column; gap: 9px; }
+  .stage-n { font-family: var(--font-mono); font-size: 11px; color: var(--brass); letter-spacing: .1em; }
+  .stage h3 { font-size: 18px; }
+  .stage p { font-size: 14.5px; color: var(--ink-2); }
+
+  /* test library */
+  .tests { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+  @media (max-width: 900px) { .tests { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .tests { grid-template-columns: 1fr; } }
+  .test-group h3 {
+    font-family: var(--font-body); font-size: 12px; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-3);
+    padding-bottom: 9px; border-bottom: 1px solid var(--rule); margin-bottom: 4px;
+  }
+  .test-group ul { list-style: none; margin: 0; padding: 0; }
+  .test-group li {
+    padding: 9px 0; border-bottom: 1px solid var(--rule-soft);
+    font-size: 14.5px; color: var(--ink-2);
+    display: flex; gap: 10px; align-items: baseline;
+  }
+  .test-group li:last-child { border-bottom: none; }
+  .test-group li b { color: var(--ink); font-weight: 500; }
+  .test-group li span { font-size: 13px; color: var(--ink-3); }
+
+  /* proof figures */
+  .figures { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--rule); border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+  @media (max-width: 880px) { .figures { grid-template-columns: repeat(2, 1fr); } }
+  .figure { background: var(--surface); padding: 26px 22px; }
+  .figure dt { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px; }
+  .figure dd { margin: 0; font-family: var(--font-display); font-size: 34px; font-weight: 600;
+    line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .figure .unit { font-size: 15px; color: var(--ink-3); font-family: var(--font-body); font-weight: 400; }
+  .figure p { margin-top: 10px; font-size: 13.5px; color: var(--ink-2); line-height: 1.45; }
+
+  /* sources */
+  .sources { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  @media (max-width: 820px) { .sources { grid-template-columns: 1fr; gap: 32px; } }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-2);
+    border: 1px solid var(--rule-strong); border-radius: 2px; padding: 6px 11px;
+    background: var(--surface);
+  }
+  .chip.primary { border-color: var(--brass-edge); background: var(--brass-wash); color: var(--brass); }
+
+  .notes { display: flex; flex-direction: column; gap: 20px; }
+  .note { display: flex; gap: 14px; align-items: flex-start; }
+  .note-key {
+    font-family: var(--font-mono); font-size: 11px; color: var(--brass);
+    border: 1px solid var(--brass-edge); background: var(--brass-wash);
+    border-radius: 2px; padding: 3px 7px; flex: none; margin-top: 2px;
+  }
+  .note h3 { font-size: 16.5px; font-family: var(--font-body); font-weight: 600; margin-bottom: 4px; }
+  .note p { font-size: 14.5px; color: var(--ink-2); }
+
+  /* audience */
+  .audience { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--rule); border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+  @media (max-width: 820px) { .audience { grid-template-columns: 1fr; } }
+  .aud { background: var(--surface); padding: 28px 24px; }
+  .aud h3 { font-size: 19px; margin-bottom: 10px; }
+  .aud p { font-size: 14.5px; color: var(--ink-2); }
+  .aud ul { margin: 14px 0 0; padding-left: 18px; color: var(--ink-2); font-size: 14px; }
+  .aud li { margin-bottom: 5px; }
+
+  /* closing */
+  .closing { text-align: left; }
+  .closing-panel {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 3px;
+    padding: clamp(28px, 5vw, 52px); box-shadow: var(--shadow);
+    display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center;
+  }
+  @media (max-width: 820px) { .closing-panel { grid-template-columns: 1fr; gap: 28px; } }
+  .closing-panel h2 { font-size: clamp(25px, 3.4vw, 36px); line-height: 1.12; margin-bottom: 14px; }
+  .closing-panel p { color: var(--ink-2); font-size: 16.5px; max-width: 46ch; }
+  .closing-actions { display: flex; flex-direction: column; gap: 10px; }
+  .closing-actions .btn { text-align: center; }
+  .closing-note { font-size: 13px; color: var(--ink-3); margin-top: 6px; }
+
+  footer { border-top: 1px solid var(--rule); padding-block: 36px 52px; }
+  .foot-in { display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: flex-start; }
+  .foot-in p { font-size: 13.5px; color: var(--ink-3); max-width: 48ch; }
+  .foot-links { display: flex; flex-wrap: wrap; gap: 20px; font-size: 13.5px; color: var(--ink-2); }
+  .foot-links a { text-decoration: none; }
+  .foot-links a:hover { color: var(--brass); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap masthead-in">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">DB</span>
+      <span>DataBridge</span>
+    </div>
+    <nav aria-label="Sections">
+      <a href="#how">How it works</a>
+      <a href="#tests">Tests</a>
+      <a href="#scale">Scale</a>
+      <a href="#deployment">Deployment</a>
+      <a href="#who">Who it's for</a>
+    </nav>
+    <a class="btn" href="#contact">Request a demonstration</a>
+  </div>
+</header>
+
+<main>
+  <!-- ── Hero: the thesis. Everything ties out except one row. ───────────── -->
+  <div class="wrap hero">
+    <div class="hero-grid">
+      <div>
+        <p class="label">Audit analytics for banks and SACCOs</p>
+        <h1>Your auditors test a sample. Your ledger has <em>four million rows</em>.</h1>
+        <p class="hero-lede">
+          DataBridge extracts every transaction from your core banking system each night,
+          tests one hundred percent of it against the controls you already have on paper,
+          and hands your audit team the exceptions by morning. Nothing leaves your network.
+        </p>
+        <div class="hero-actions">
+          <a class="btn" href="#contact">Request a demonstration</a>
+          <a class="btn btn-ghost" href="#how">See how it works</a>
+        </div>
+        <dl class="hero-meta">
+          <div>
+            <dt>Tested nightly</dt>
+            <dd class="num">100%</dd>
+          </div>
+          <div>
+            <dt>Audit tests</dt>
+            <dd class="num">29</dd>
+          </div>
+          <div>
+            <dt>Data leaving site</dt>
+            <dd class="num">None</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="ledger">
+        <div class="ledger-head">
+          <span class="ledger-title">core.transactions &middot; 02:00 run</span>
+          <span class="ledger-stamp">4,118,602 tested</span>
+        </div>
+        <div class="ledger-scroll">
+          <table class="rows">
+            <caption class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">
+              Sample of a nightly duplicate-payment test, showing one flagged exception
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Txn</th>
+                <th scope="col">Posted</th>
+                <th scope="col">Channel</th>
+                <th scope="col">Amount KES</th>
+                <th scope="col">Test</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>904118577</td><td>02:14:06</td><td>PESALINK</td>
+                <td class="amt">184,500.00</td><td><span class="tick">&#10003;</span> clear</td>
+              </tr>
+              <tr>
+                <td>904118578</td><td>02:14:09</td><td>M-PESA</td>
+                <td class="amt">7,250.00</td><td><span class="tick">&#10003;</span> clear</td>
+              </tr>
+              <tr class="flagged">
+                <td>904118579</td><td>02:14:11</td><td>RTGS</td>
+                <td class="amt">2,480,000.00</td>
+                <td><span class="flag-mark">&#9873; dup.</span></td>
+              </tr>
+              <tr>
+                <td>904118580</td><td>02:14:11</td><td>RTGS</td>
+                <td class="amt">2,480,000.00</td>
+                <td><span class="flag-mark">&#9873; dup.</span></td>
+              </tr>
+              <tr>
+                <td>904118581</td><td>02:14:15</td><td>BRANCH</td>
+                <td class="amt">62,000.00</td><td><span class="tick">&#10003;</span> clear</td>
+              </tr>
+              <tr>
+                <td>904118582</td><td>02:14:18</td><td>CARD</td>
+                <td class="amt">3,190.00</td><td><span class="tick">&#10003;</span> clear</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ledger-foot">
+          <span class="flag-mark" aria-hidden="true">&#9873;</span>
+          <p>
+            <strong>One exception, KES 2,480,000.</strong> Same beneficiary, same amount,
+            eleven seconds apart. A monthly sample of 40 items would have had a one-in-fifty
+            chance of catching it.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── The argument ─────────────────────────────────────────────────────── -->
+  <section id="why">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">The problem with sampling</p>
+        <h2>Sampling was a concession to arithmetic, not a method anyone preferred.</h2>
+        <p>
+          Internal audit tests a sample because a person cannot foot four million journal
+          lines. The sample is defensible and the exception it misses is still an exception.
+          Continuous auditing removes the concession: the computer tests the population.
+        </p>
+      </div>
+
+      <div class="argument">
+        <div>
+          <h3>A sample of 40</h3>
+          <div class="dots" aria-hidden="true">
+            <span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="dot"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span>
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot on"></span>
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="dot"></span><span class="dot"></span><span class="dot on"></span><span class="dot"></span>
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot miss"></span>
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="dot"></span><span class="dot"></span><span class="dot on"></span><span class="dot"></span>
+          </div>
+          <p class="caption">Seven tested &middot; one exception, untested</p>
+          <p style="margin-top:14px">
+            Coverage is a percentage of a percentage. The finding that matters is the one
+            outside the sample, and nothing in the working paper says it was there.
+          </p>
+        </div>
+        <div>
+          <h3>The whole population</h3>
+          <div class="dots" aria-hidden="true">
+            <span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span>
+            <span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span>
+            <span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span>
+            <span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span>
+            <span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span>
+            <span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span>
+            <span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot miss"></span>
+            <span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span>
+            <span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span>
+            <span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span>
+          </div>
+          <p class="caption">Forty tested &middot; the exception is found</p>
+          <p style="margin-top:14px">
+            The same control, applied to every row, every night. The exception is not a
+            matter of luck, and the coverage statement in your audit file is simply
+            <em>all of it</em>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How it works ─────────────────────────────────────────────────────── -->
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">How it works</p>
+        <h2>Four stages, running unattended between close of business and morning.</h2>
+        <p>
+          The sequence is ordinary data engineering built for an audit standard of evidence:
+          every copy reconciled to the source by count and by sum before a single test runs.
+        </p>
+      </div>
+
+      <div class="pipeline">
+        <div class="stage">
+          <span class="stage-n">Stage 1</span>
+          <h3>Connect</h3>
+          <p>
+            Read-only credentials against Oracle, SQL Server, PostgreSQL or MySQL — your core
+            banking, ERP, HR and lending systems. Views are enough; base tables are not required.
+          </p>
+        </div>
+        <div class="stage">
+          <span class="stage-n">Stage 2</span>
+          <h3>Extract</h3>
+          <p>
+            Incremental extraction on a bookmark, so tonight reads only what changed. A dropped
+            connection resumes where it stopped and never skips a posting.
+          </p>
+        </div>
+        <div class="stage">
+          <span class="stage-n">Stage 3</span>
+          <h3>Test</h3>
+          <p>
+            Twenty-nine audit tests over the full population — duplicates, segregation of duties,
+            Benford's Law, outliers, aging, gaps — plus your own SQL and Python.
+          </p>
+        </div>
+        <div class="stage">
+          <span class="stage-n">Stage 4</span>
+          <h3>Resolve</h3>
+          <p>
+            Findings land in exception tables your team works through: assign, comment, close,
+            raise to Jira or ServiceNow. Every collection is kept, so a trend is real.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── The tests ────────────────────────────────────────────────────────── -->
+  <section id="tests">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Test library</p>
+        <h2>The tests an audit manual already asks for, written once and run every night.</h2>
+        <p>
+          Each is a dataset-driven function over the extracted population, not a stored
+          report. Point one at a table, set its thresholds, and it runs on the schedule
+          you give it.
+        </p>
+      </div>
+
+      <div class="tests">
+        <div class="test-group">
+          <h3>Transaction integrity</h3>
+          <ul>
+            <li><b>Duplicate detection</b> <span>same payee, amount, window</span></li>
+            <li><b>Round numbers</b> <span>authorisation-limit avoidance</span></li>
+            <li><b>Gap detection</b> <span>missing cheque or invoice numbers</span></li>
+            <li><b>Reconciliation</b> <span>two systems, row by row</span></li>
+            <li><b>Cross-reference</b> <span>ledger against sub-ledger</span></li>
+            <li><b>Completeness</b> <span>nulls where a value is mandatory</span></li>
+          </ul>
+        </div>
+        <div class="test-group">
+          <h3>Statistical &amp; forensic</h3>
+          <ul>
+            <li><b>Benford's Law</b> <span>first-digit distribution</span></li>
+            <li><b>Outlier detection</b> <span>z-score and interquartile</span></li>
+            <li><b>Monetary unit sampling</b> <span>value-weighted selection</span></li>
+            <li><b>Stratification</b> <span>population by band</span></li>
+            <li><b>Sample evaluation</b> <span>projected misstatement</span></li>
+            <li><b>Clustering</b> <span>unsupervised segmentation</span></li>
+          </ul>
+        </div>
+        <div class="test-group">
+          <h3>Controls &amp; compliance</h3>
+          <ul>
+            <li><b>Segregation of duties</b> <span>maker equals checker</span></li>
+            <li><b>Access review</b> <span>rights against role</span></li>
+            <li><b>Aging</b> <span>receivables, arrears, NPL buckets</span></li>
+            <li><b>Fuzzy matching</b> <span>vendor against employee</span></li>
+            <li><b>Sanctions screening</b> <span>name lists</span></li>
+            <li><b>Profiling</b> <span>what changed in the data itself</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Scale ────────────────────────────────────────────────────────────── -->
+  <section id="scale">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Measured, not estimated</p>
+        <h2>Built and tested at the volumes a tier-one bank actually runs.</h2>
+        <p>
+          The figures below were measured end to end through the running application against
+          generated core-banking data, with every copy checked back to the source by row
+          count and by amount total.
+        </p>
+      </div>
+
+      <dl class="figures">
+        <div class="figure">
+          <dt>Single extraction run</dt>
+          <dd class="num">100<span class="unit">M rows</span></dd>
+          <p>Out of Oracle and into the warehouse, exact to the cent against the source.</p>
+        </div>
+        <div class="figure">
+          <dt>Sustained throughput</dt>
+          <dd class="num">61,163<span class="unit">/sec</span></dd>
+          <p>Rows per second on one worker, including landing and deduplication.</p>
+        </div>
+        <div class="figure">
+          <dt>Nightly batch</dt>
+          <dd class="num">41<span class="unit"> jobs</span></dd>
+          <p>End-of-day feeds on one cron minute: 30.7 million rows in 245 seconds.</p>
+        </div>
+        <div class="figure">
+          <dt>Automated tests</dt>
+          <dd class="num">2,385</dd>
+          <p>Covering the extraction, the analytics and every failure path we could inject.</p>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ── Deployment ───────────────────────────────────────────────────────── -->
+  <section id="deployment">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Deployment and data protection</p>
+        <h2>It installs inside your perimeter. Your data never leaves it.</h2>
+      </div>
+
+      <div class="sources">
+        <div>
+          <p class="label" style="display:block;margin-bottom:14px">Sources it reads</p>
+          <div class="chips">
+            <span class="chip primary">Oracle</span>
+            <span class="chip primary">SQL&nbsp;Server</span>
+            <span class="chip primary">PostgreSQL</span>
+            <span class="chip primary">MySQL</span>
+            <span class="chip">Temenos T24</span>
+            <span class="chip">Dynamics 365</span>
+            <span class="chip">Stripe</span>
+            <span class="chip">Salesforce</span>
+            <span class="chip">NetSuite</span>
+            <span class="chip">HubSpot</span>
+            <span class="chip">Zendesk</span>
+            <span class="chip">CSV &amp; Excel</span>
+          </div>
+          <p style="margin-top:20px;color:var(--ink-2);font-size:14.5px;max-width:46ch">
+            Connections are read-only by design and their credentials are held in HashiCorp
+            Vault. A connection belongs to a team, and a team sees only what it owns.
+          </p>
+        </div>
+
+        <div class="notes">
+          <div class="note">
+            <span class="note-key">01</span>
+            <div>
+              <h3>On your servers, or none at all</h3>
+              <p>
+                Windows or Linux, with or without Docker. An installation that cannot reach
+                the internet works exactly the same — the licence is a signed file, not a
+                call home.
+              </p>
+            </div>
+          </div>
+          <div class="note">
+            <span class="note-key">02</span>
+            <div>
+              <h3>A tamper-evident audit trail</h3>
+              <p>
+                Every action is journalled to an append-only chain on disk, so the log can be
+                shipped somewhere DataBridge cannot reach and an edit to it shows.
+              </p>
+            </div>
+          </div>
+          <div class="note">
+            <span class="note-key">03</span>
+            <div>
+              <h3>Controls a bank's IT will ask about</h3>
+              <p>
+                Team-scoped access on every route, optional second factor, sign-in through
+                your identity provider, and scheduled backups that are verified restorable.
+              </p>
+            </div>
+          </div>
+          <div class="note">
+            <span class="note-key">04</span>
+            <div>
+              <h3>Nothing stops quietly</h3>
+              <p>
+                A job that cannot run fails loudly, records why, and emails whoever watches
+                the overnight controls. A control that stops without saying so is the failure
+                this product exists to catch.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Who it's for ─────────────────────────────────────────────────────── -->
+  <section id="who">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Who it's for</p>
+        <h2>Written for the people who have to sign the report.</h2>
+      </div>
+
+      <div class="audience">
+        <div class="aud">
+          <h3>Banks</h3>
+          <p>
+            Core banking volumes, a dozen source systems, and a regulator who expects
+            continuous controls monitoring rather than an annual sample.
+          </p>
+          <ul>
+            <li>Duplicate and suspicious payments</li>
+            <li>Dormant and reactivated accounts</li>
+            <li>Unapproved journal entries</li>
+            <li>Loan classification and arrears</li>
+          </ul>
+        </div>
+        <div class="aud">
+          <h3>SACCOs</h3>
+          <p>
+            A small internal audit function carrying the same obligations as a bank's, with a
+            fraction of the staff to meet them.
+          </p>
+          <ul>
+            <li>Member deposits against the ledger</li>
+            <li>Loan appraisal and disbursement</li>
+            <li>Dividend and interest computation</li>
+            <li>Staff and committee conflicts</li>
+          </ul>
+        </div>
+        <div class="aud">
+          <h3>Regulators &amp; assurance</h3>
+          <p>
+            Supervisory and public-sector teams testing returns from institutions that each
+            keep their data in a different shape.
+          </p>
+          <ul>
+            <li>Returns against source records</li>
+            <li>Payroll and procurement testing</li>
+            <li>Cross-entity reconciliation</li>
+            <li>Evidence retained per engagement</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Closing ──────────────────────────────────────────────────────────── -->
+  <section id="contact" class="closing">
+    <div class="wrap">
+      <div class="closing-panel">
+        <div>
+          <p class="label">Request a demonstration</p>
+          <h2>Bring one table you already worry about.</h2>
+          <p>
+            The most useful first meeting is an hour against your own data — one ledger, one
+            control, run over the whole population while you watch. We will tell you what it
+            finds, including nothing.
+          </p>
+        </div>
+        <div class="closing-actions">
+          <a class="btn" href="mailto:hello@databridge.africa?subject=DataBridge%20demonstration">
+            Email the team
+          </a>
+          <a class="btn btn-ghost" href="mailto:hello@databridge.africa?subject=DataBridge%20technical%20evaluation">
+            Technical evaluation pack
+          </a>
+          <p class="closing-note">
+            Typical proof of concept: two weeks, read-only access, inside your network.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-in">
+    <div>
+      <div class="brand" style="margin-bottom:10px">
+        <span class="brand-mark" aria-hidden="true">DB</span>
+        <span>DataBridge</span>
+      </div>
+      <p>
+        Audit analytics and continuous controls monitoring for financial institutions in
+        East Africa. Installed on your infrastructure, licensed per user, supported locally.
+      </p>
+    </div>
+    <div class="foot-links">
+      <a href="#how">How it works</a>
+      <a href="#tests">Test library</a>
+      <a href="#scale">Scale</a>
+      <a href="#deployment">Deployment</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
